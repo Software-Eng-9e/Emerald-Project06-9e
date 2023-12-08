@@ -365,22 +365,6 @@ export default function PublicCanvas({ activity, isSandbox}) {
               </category>
             ))
         }
-        {/*ADDED*/}<category name='Custom'>
-          <block type= 'customBlock1'></block>
-          {
-                  // maps out blocks in category
-                  // eslint-disable-next-line
-                  blockMap.map((block) => {
-                    return (
-                      <block
-                        type={block.name}
-                        is='Blockly block'
-                        key={block.name}
-                      />
-                    );
-                  })
-                }
-        {/*ADDED*/}</category>
       </xml>
 
       {compileError && (
