@@ -1,6 +1,6 @@
 import React from 'react';
 import PublicCanvas from './canvas/PublicCanvas';
-import CustomBlock from './canvas/blockFactory/CustomBlock';
+import CustomBlock from './canvas/blockFactory/CustomBlock';    //import custom block jsx
 import BlockList from './canvas/BlockList';
 import StudentCanvas from './canvas/StudentCanvas';
 import MentorCanvas from './canvas/MentorCanvas';

@@ -15,29 +15,31 @@ p {
   height: 20vh;
   right: 40px;
   top: 80px;
-  border: 1px solid #000; /* Add a border, adjust the color and size as needed */
-  z-index:1;
+  border: 1px solid #000; //Border styling, adjust color and size as needed 
+  z-index: 1;
   overflow: scroll;
 }
+
+//Common styling for both pre and #languageTA elements 
 pre,
 #languageTA {
-  border: #ddd 1px solid;
+  border: #ddd 1px solid;  //common border styling, adjust color as needed 
   margin-top: 0;
   position: absolute;
   overflow: scroll;
 }
+
+// Additional styling for #languageTA 
 #languageTA {
   position: absolute;
   width: 40%;
   height: 20vh;
   right: 40px;
   top: 80px;
-  border: 1px solid #000; /* Add a border, adjust the color and size as needed */
-  z-index:1;
+  border: 1px solid #000; //Border styling, adjust color and size as needed 
+  z-index: 1;
   overflow: scroll;
 }
-
-
 
 #horizontal-container {
   height: 100%;
@@ -165,7 +167,7 @@ pre,
   align-items: center;
   flex: 1;
   max-height: 8vh;
-  width: 1s00%;
+  width: 100%;
 
   #logo {
     max-width: 145px;
@@ -226,7 +228,7 @@ pre,
 }
 
 #newblockly-canvas {
-  margin: absolute;
+  margin: absolute; //fixed;
   width: 55%;
   height: 72vh;
 }
@@ -255,7 +257,7 @@ pre,
   top: 345px;
 }
 
-#block-bs{
+#block-bs{    //adjust
   position: absolute;
   width: 40%;
   height: 0vh;
@@ -287,13 +289,13 @@ pre,
   top: 400px;
 }
 
-#blocklyCanvasTop {
-  position: absolute;
+#blocklyCanvasTop { //adjust
+  position: absolute; // border, size, color
   width: 40%;
   height: 20vh;
   right: 40px;
   top: 80px;
-  border: 1px solid #000; /* Add a border, adjust the color and size as needed */
+  border: 1px solid #000; 
   z-index:1;
   overflow: scroll;
 }
@@ -302,68 +304,68 @@ pre,
   position: absolute;
 }
 
-#blocklyCanvasMid {
-  position: absolute;
+#blocklyCanvasMid { //adjust
+  position: absolute; // border, size, color
   width: 40%;
   height: 20vh;
   right: 40px;
   top: 250px;
-  border: 1px solid #000; /* Add a border, adjust the color and size as needed */
+  border: 1px solid #000; 
   z-index:1;
   overflow: scroll;
 }
 
-#blocklyCanvasBottom {
-  position: absolute;
+#blocklyCanvasBottom {  //adjust
+  position: absolute; // border, size, color
   width: 40%;
   height: 20vh;
   right: 40px;
   top: 420px;
-  border: 1px solid #000; /* Add a border, adjust the color and size as needed */
+  border: 1px solid #000; 
   z-index:1;
   overflow: scroll;
 }
 
-#list-left{
-  position: absolute;
+#list-left{ //adjust
+  position: absolute;   // border, size, color
   width: 25%;
-  height: 70vh;
+  height: 70vh;   
   left: 35px;
   top: 50px;
-  border: 1px solid #000; /* Add a border, adjust the color and size as needed */
+  border: 1px solid #000; 
   z-index:1;
   overflow: scroll;
 }
 
-#list-right{
-  position: absolute;
+#list-right{  //adjust
+  position: absolute; // border, size, color
   width: 25%;
   height: 70vh;
   right: 35px;
   top: 50px;
-  border: 1px solid #000; /* Add a border, adjust the color and size as needed */
+  border: 1px solid #000; 
   z-index:1;
   overflow: scroll;
 }
 
-#list-midtop{
-  position: absolute;
+#list-midtop{ //adjust
+  position: absolute; // border, size, color
   width: 42.7%;
   height: 30vh;
   left: 400px;
   top: 55px;
-  border: 1px solid #000; /* Add a border, adjust the color and size as needed */
+  border: 1px solid #000; 
   z-index:1;
   overflow: scroll;
 }
 
-#list-midbottom{
-  position: absolute;
+#list-midbottom{  //adjust
+  position: absolute; // border, size, color
   width: 42.7%;
   height: 35vh;
   left: 400px;
   top: 300px;
-  border: 1px solid #000; /* Add a border, adjust the color and size as needed */
+  border: 1px solid #000; 
   z-index:1;
   overflow: scroll;
 }
@@ -577,7 +579,7 @@ pre,
 
   #disabled-option {
     opacity: 0.6;
-    background-color: darken(#colors[tertiary], 10%);
+    background-color: darken(#colors(tertiary), 10%);
   }
 }
 

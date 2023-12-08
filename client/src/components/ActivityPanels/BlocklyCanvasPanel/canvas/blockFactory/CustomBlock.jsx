@@ -20,7 +20,7 @@ import './blocks';
 import './factory';
 import NavBar from '../../../../NavBar/NavBar';
 
-
+//other imports^
 
 let plotId = 1;
 
@@ -51,98 +51,143 @@ export default function CustomBlock({activity}) {
   /* ADDED */ const blockMap = new Map(); // IMPORTANT
   /* ADDED */ const descriptionMap = new Map(); // IMPORTANT
 
-
-  
-
-  // const setWorkspace = () => {
-  //   workspaceRef.current = window.Blockly.inject('newblockly-canvas', {
-  //     toolbox: document.getElementById('toolbox'),
-  //   });
-  //   // Define the XML for the root block
-  //   const rootBlockXml = '<xml>' +
-  //     '<block type="factory_base" deletable="false" movable="false"></block>' +
-  //     '</xml>';
-  
-  //   // Convert the XML string to a DOM element
-  //   const xmlDom = Blockly.Xml.textToDom(rootBlockXml);
-  
-  //   // Initialize the workspace with the root block
-  //   Blockly.Xml.domToWorkspace(xmlDom, workspaceRef.current);
-  
-  //   workspaceRef.current.addChangeListener(() => {
-  //     const xml = Blockly.Xml.workspaceToDom(workspaceRef.current);
-  //     const xmlText = Blockly.Xml.domToText(xml);
-  //     setBlockCode(xmlText);
-  
-  //     const generatorCode = Blockly.JavaScript.workspaceToCode(workspaceRef.current);
-  //     setGeneratorCode(generatorCode);
-  //   });
-  // };
-
-  const setWorkspace = () => {
+  const setWorkspace = () => {    //workspace setup
     workspaceRef.current = window.Blockly.inject('newblockly-canvas', {
       toolbox: document.getElementById('toolbox'),
     });
   
-    // Define the XML for the root block
-    const rootBlockXml = '<xml>' +
+    const rootBlockXml = '<xml>' +    //xml for root block
       '<block type="factory_base" deletable="false" movable="false"></block>' +
       '</xml>';
   
-    // Convert the XML string to a DOM element
-    const xmlDom = Blockly.Xml.textToDom(rootBlockXml);
+    const xmlDom = Blockly.Xml.textToDom(rootBlockXml);   //grab xml and put into DOM for updating
   
-    // Initialize the workspace with the root block
-    Blockly.Xml.domToWorkspace(xmlDom, workspaceRef.current);
-    //createWorkspaceInPreview();
+    Blockly.Xml.domToWorkspace(xmlDom, workspaceRef.current);   //initiate workspace with root block added
 
-
-    const previewDiv = document.getElementById('preview');
+    const previewDiv = document.getElementById('preview');    // create a preview workspace
     const previewWorkspace = Blockly.inject(previewDiv, {
       media: '../../media/',
       scrollbars: false,
     });
 
-    const block = previewWorkspace.newBlock('math_number');
+    const block = previewWorkspace.newBlock('math_number');   //create and render a sample block in the preview workspace
     block.moveBy(50, 50);
     block.initSvg();
     block.render();
-    // Event listener for block creation
-    workspaceRef.current.addChangeListener((event) => {
-      const xml = Blockly.Xml.workspaceToDom(workspaceRef.current);
-      const xmlText = Blockly.Xml.domToText(xml);
-      
-      const genCode = updateLanguage(xmlText);
-      setGeneratorCode(genCode);
-      updatePreview(genCode, previewWorkspace);
-      var allBlocks = previewWorkspace.getTopBlocks(true);
-      if (allBlocks.length > 0) {
-        // Get the first block (since there's only one)
-        var myBlock = allBlocks[0];
-    
-        // Now pass this block to your function
-        const ardCode = updateGenerator(myBlock);
-        setBlockCode(ardCode);
-    } else {
-
-      setBlockCode("not working");
-    }
-      
-      //onst abcd = updateGenerator(prevBlock)
-      //setBlockCode(abcd);
-    });
   };
 
-    useEffect(() => {
-      const setUp = async () => {
-        activityRef.current = activity;
-        if (!workspaceRef.current && activity && Object.keys(activity).length !== 0) {
-          setWorkspace();
+  /*      first attempt at useEffect, was trying to implement useEffect and addChangeListener seperately
+  useEffect(() => {
+    const setUp = async () => {
+      activityRef.current = activity;
+      if (!workspaceRef.current && activity && Object.keys(activity).length !== 0) {
+        setWorkspace();
+      }
+    };
+    setUp();
+  }, [activity]);
+
+  useEffect(() => {
+    const changeListener = () => {
+      const xml = Blockly.Xml.workspaceToDom(workspaceRef.current);
+      const xmlText = Blockly.Xml.domToText(xml);
+      setBlockCode(xmlText);
+
+      const generatorCode = Blockly.JavaScript.workspaceToCode(workspaceRef.current);
+      setGeneratorCode(generatorCode);
+    };
+
+    if (workspaceRef.current) {
+      workspaceRef.current.addChangeListener(changeListener);
+    }
+
+    return () => {
+      if (workspaceRef.current) {
+        workspaceRef.current.removeChangeListener(changeListener);
+      }
+    };
+  }, [workspaceRef.current]);
+
+  const handleUndo = () => {
+    if (workspaceRef.current.undoStack_.length > 0)
+      workspaceRef.current.undo(false);
+  };
+
+  const handleRedo = () => {
+    if (workspaceRef.current.redoStack_.length > 0)
+      workspaceRef.current.undo(true);
+  };
+
+  const handleConsole = async () => {
+    if (showPlotter) {
+      message.warning('Close serial plotter before opening serial monitor');
+      return;
+    }
+
+    if (!showConsole) {
+      await handleOpenConnection(9600, 'newLine');
+      if (typeof window['port'] === 'undefined') {
+        message.error('Fail to select serial device');
+        return;
+      }
+      setConnectionOpen(true);
+      setShowConsole(true);
+    } else {
+      if (connectionOpen) {
+        await handleCloseConnection();
+        setConnectionOpen(false);
+      }
+      setShowConsole(false);
+    }
+  };
+  */
+
+  useEffect(() => {                                   //not entirely functional, not every change is reflected properly
+    const initializeBlocklyWorkspace = () => {  //initialize workspace
+      if (!activity || workspaceRef.current) {
+        return;
+      }
+      
+      workspaceRef.current = Blockly.inject('blockly-div', {  // Inject Blockly into the DOM element with a specific configuration
+        toolbox: document.getElementById('toolbox'),  //blockly toolbox options
+      });
+
+      // Convert the initial XML to a DOM and inject it to the workspace
+      const initialXml = Blockly.Xml.textToDom(activity.startingBlocks);
+      Blockly.Xml.domToWorkspace(initialXml, workspaceRef.current);
+    };
+
+    // Call the initialize func
+    initializeBlocklyWorkspace();
+
+    // Attach a change listener to the Blockly workspace to update code previews
+    const attachChangeListener = () => {
+      workspaceRef.current.addChangeListener((event) => {
+        if (event.type === Blockly.Events.UI) {
+          return; // Ignore UI events
         }
-      };
-      setUp();
-    }, [activity]);
-  
+
+        // For other event types, update the generator and block code
+        const updatedXml = Blockly.Xml.workspaceToDom(workspaceRef.current);
+        const updatedXmlText = Blockly.Xml.domToText(updatedXml);
+        setGeneratorCode(updatedXmlText); // Update the generator code state
+
+        const updatedCode = Blockly.JavaScript.workspaceToCode(workspaceRef.current);
+        setBlockCode(updatedCode); // Update the block code state
+      });
+    };
+
+    // Attach the change listener after initializing the workspace
+    attachChangeListener();
+
+    // Optional: Return a cleanup function to be called on component unmount
+    return () => {
+      if (workspaceRef.current) {
+        // Dispose of the Blockly workspace to prevent memory leaks
+        workspaceRef.current.dispose();
+      }
+    };
+  }, [activity]); // Only re-run the effect if 'activity' changes   
   
   const handleUndo = () => {
     if (workspaceRef.current.undoStack_.length > 0)
@@ -399,10 +444,7 @@ function updateLanguage(xmlCode, varToChange) {
   temporaryWorkspace.dispose();  
   //injectCode(code, 'blocklyCanvasMid')
   return varToChange;
-  
-
 }
-
 
 function formatJson_(blockType, rootBlock) {
   var JS = {};
@@ -624,128 +666,99 @@ function getTypesFrom_(block, name) {
   return types;
 }
 
-
-
-
-// function updatePreview(jsonCode, previewWorkspace) {
-//   previewWorkspace.clear();
-
-//   var format = 'JSON';
-//   var code = jsonCode;
-//   if (!code.trim()) {
-//     // Nothing to render.  Happens while cloud storage is loading.
-//     return;
-//   }
-//   var backupBlocks = Blockly.Blocks;
-//   try {
-//     // Make a shallow copy.
-//     Blockly.Blocks = {};
-//     for (var prop in backupBlocks) {
-//       Blockly.Blocks[prop] = backupBlocks[prop];
-//     }
-
-//     if (format === 'JSON') {
-//       var json = JSON.parse(code);
-//       Blockly.Blocks[json.id || UNNAMED] = {
-//         init: function() {
-//           this.jsonInit(json);
-//         }
-//       };
-//     }  else {
-//       throw 'Unknown format: ' + format;
-//     }
-
-//     // Look for a block on Blockly.Blocks that does not match the backup.
-//     var blockType = null;
-//     for (var type in Blockly.Blocks) {
-//       if (typeof Blockly.Blocks[type].init == 'function' &&
-//           Blockly.Blocks[type] != backupBlocks[type]) {
-//         blockType = type;
-//         break;
-//       }
-//     }
-//     if (!blockType) {
-//       return;
-//     }
-
-//     const block = previewWorkspace.newBlock(blockType);
-//     block.moveBy(50, 50);
-//     block.initSvg();
-//     block.render();
-
-//     // var previewBlock = previewWorkspace.newBlock(blockType);
-//     // previewBlock.initSvg();
-//     // previewBlock.render();
-//     // previewBlock.setMovable(false);
-//     // previewBlock.setDeletable(false);
-//     // previewBlock.moveBy(15, 10);
-//     // previewWorkspace.clearUndo();
-
-//     // updateGenerator(previewBlock);
-//   } finally {
-//     Blockly.Blocks = backupBlocks;
-//   }
-// }
-
+/*    original attempt at update preview, json code wasn't being parsed properly and preview window wasn't displaying properly at all when change was made
 function updatePreview(jsonCode, previewWorkspace) {
+  const clearPreview = () => previewWorkspace.clear();
+
+  const isValidJson = (code) => {
+    const trimmedCode = code.trim();
+    return trimmedCode ? JSON.parse(trimmedCode) : null;
+  };
+
+  const createBlock = (definition) => {
+    const { type } = definition;
+    Blockly.Blocks[type] = {
+      init: function () {
+        this.jsonInit(definition);
+      }
+    };
+
+    const newBlock = previewWorkspace.newBlock(type);
+    newBlock.moveBy(50, 50);
+    newBlock.initSvg();
+    newBlock.render();
+  };
+
+  const handleError = (error) => console.error('Error updating block preview:', error);
+
+  const restoreOriginalBlocks = (originalBlocks) => Blockly.Blocks = { ...originalBlocks };
+
+  const previewUpdate = (jsonCode) => {
+    clearPreview();
+
+    const originalBlocks = { ...Blockly.Blocks };
+
+    try {
+      const blockDefinition = isValidJson(jsonCode);
+      if (!blockDefinition) {
+        console.error('No valid JSON code provided for preview.');
+        return;
+      }
+
+      createBlock(blockDefinition);
+    } catch (error) {
+      handleError(error);
+    } finally {
+      restoreOriginalBlocks(originalBlocks);
+    }
+  };
+
+  previewUpdate(jsonCode);
+}
+*/
+
+function updatePreview(jsonCode, previewWorkspace) {    //not entirely functional, block preview appears but not accurate, no param or value display in block
+  // clear current preview
   previewWorkspace.clear();
 
-  var format = 'JSON';
-  var code = jsonCode.trim();
+  // trim and format json code
+  const trimmedCode = jsonCode.trim();
 
-  if (!code) {
-    // Nothing to render. Happens while cloud storage is loading.
+  // return if nothing new to render
+  if (!trimmedCode) {
+    console.error('No JSON code provided for preview.');
     return;
   }
 
-  var backupBlocks = Blockly.Blocks;
+  //create backup of current blocks
+  const backupBlocks = Blockly.Blocks;
 
   try {
-    // Make a shallow copy.
-    Blockly.Blocks = Object.assign({}, backupBlocks);
+    //temp block object
+    Blockly.Blocks = {...backupBlocks};
 
-    if (format === 'JSON') {
-      var json = JSON.parse(code);
-      Blockly.Blocks[json.id || 'UNNAMED'] = {
-        init: function () {
-          this.jsonInit(json);
-        },
-      };
-    } else {
-      throw 'Unknown format: ' + format;
-    }
+    //parse json into block def
+    const blockDefinition = JSON.parse(trimmedCode);
 
-    // Look for a block on Blockly.Blocks that does not match the backup.
-
-    var blockType = null;
-
-
-    for (var type in Blockly.Blocks) {
-      if (
-        typeof Blockly.Blocks[type].init === 'function' &&
-        Blockly.Blocks[type] !== backupBlocks[type]
-      ) {
-        blockType = type;
-        break;
+    //create new block with new json def
+    Blockly.Blocks[blockDefinition.type] = {
+      init: function() {
+        this.jsonInit(blockDefinition);
       }
-    }
+    };
 
-    if (!blockType) {
-      return;
-    }
-
-    const block = previewWorkspace.newBlock(blockType);
-    block.moveBy(50, 50);
-    block.initSvg();
-    block.render();
-
+    //make and render in workspace preview
+    const newBlock = previewWorkspace.newBlock(blockDefinition.type);
+    newBlock.moveBy(50, 50); //block positioning
+    newBlock.initSvg();
+    newBlock.render();
+  } catch (e) {
+    console.error('Error updating block preview:', e);
   } finally {
+    //restore og block object
     Blockly.Blocks = backupBlocks;
   }
-  
-
 }
-
 
 function createWorkspaceInPreview() {
   // Reference to the #preview element
@@ -843,9 +856,7 @@ function updateGenerator(block) {
   return code.join('\n');
 };
 
-
   // Get the root block and start parsing.
-  
 
   return (
     <div id='horizontal-container' className='flex flex-column'>
@@ -884,22 +895,18 @@ function updateGenerator(block) {
                 </Row>
               </Col>
             </Row>
-            {/* Code to fix the workspace to half and provide space for the block def and gen code, will need to add a block preview */}
+            {/* workspaces, preview, def, stub elements */}
             <div id='newblockly-canvas'/>
-            <Row id='block-bs'>{saveBlock('Save Block')}</Row>
+            <Row id='block-bs'>{saveBlock('Save Block')}</Row>  
             <Row id='pre-text'>Block Preview</Row>
             <div id='preview'  style={{ textAlign: 'left' }}>
-              {/* Block Preview */}
-              {/* {preview} */}
             </div>
             <Row id='def-text'>Block Definition</Row>
             <Row id='blocklyCanvasMid'  style={{ textAlign: 'left' }}>
-              {/* {Block Definition} */}
               {generatorCode}
             </Row>
             <Row id='gen-text'>Generator Stub</Row>
             <Row id='blocklyCanvasBottom'  style={{ textAlign: 'left' }}>
-              {/* {Generator Stub} */}
               {blockCode}
             </Row>
           </Spin>
@@ -919,7 +926,7 @@ function updateGenerator(block) {
         />
       </div>
 
-      {/* This xml is for the blocks' menu we will provide. Here are examples on how to include categories and subcategories */}
+      {/* xml code for block menu including cats and subcats */}
       
       <xml id="toolbox" is = "Blockly workspace">
     <category name="Input">
