@@ -51,30 +51,48 @@ export default function CustomBlock({activity}) {
   /* ADDED */ const blockMap = new Map(); // IMPORTANT
   /* ADDED */ const descriptionMap = new Map(); // IMPORTANT
 
-  const setWorkspace = () => {    //workspace setup
-    workspaceRef.current = window.Blockly.inject('newblockly-canvas', {
-      toolbox: document.getElementById('toolbox'),
-    });
-  
-    const rootBlockXml = '<xml>' +    //xml for root block
+const initializeMainWorkspace = () => { //workspace setup
+  // inject into workspace
+  workspaceRef.current = window.Blockly.inject('newblockly-canvas', {
+    toolbox: document.getElementById('toolbox'),
+  });
+
+  // set up root block
+  const setupRootBlock = () => {
+    const rootBlockXml = '<xml>' +
       '<block type="factory_base" deletable="false" movable="false"></block>' +
       '</xml>';
-  
+
     const xmlDom = Blockly.Xml.textToDom(rootBlockXml);   //grab xml and put into DOM for updating
-  
-    Blockly.Xml.domToWorkspace(xmlDom, workspaceRef.current);   //initiate workspace with root block added
+    Blockly.Xml.domToWorkspace(xmlDom, workspaceRef.current);
+  };
 
-    const previewDiv = document.getElementById('preview');    // create a preview workspace
-    const previewWorkspace = Blockly.inject(previewDiv, {
-      media: '../../media/',
-      scrollbars: false,
-    });
+  setupRootBlock();   //set up root block
+};
 
-    const block = previewWorkspace.newBlock('math_number');   //create and render a sample block in the preview workspace
+const initializePreviewWorkspace = () => {    //setup preview workspace
+  const previewDiv = document.getElementById('preview');
+
+  // inject into preview workspace
+  const previewWorkspace = Blockly.inject(previewDiv, {
+    media: '../../media/',
+    scrollbars: false,
+  });
+
+  const renderSampleBlock = () => { //create and render a sample block in the preview workspace
+    const block = previewWorkspace.newBlock('math_number');
     block.moveBy(50, 50);
     block.initSvg();
     block.render();
   };
+
+  renderSampleBlock();  //display sample block
+};
+
+const setWorkspace = () => {    //initialize both workspaces
+  initializeMainWorkspace();
+  initializePreviewWorkspace();
+};
 
   /*      first attempt at useEffect, was trying to implement useEffect and addChangeListener seperately
   useEffect(() => {
@@ -160,34 +178,31 @@ export default function CustomBlock({activity}) {
     // Call the initialize func
     initializeBlocklyWorkspace();
 
-    // Attach a change listener to the Blockly workspace to update code previews
+    // Attach a change listener to update code previews
     const attachChangeListener = () => {
       workspaceRef.current.addChangeListener((event) => {
-        if (event.type === Blockly.Events.UI) {
-          return; // Ignore UI events
+        if (event.type === Blockly.Events.UI) {   //if UI event happens, nothing, return
+          return; 
         }
 
-        // For other event types, update the generator and block code
-        const updatedXml = Blockly.Xml.workspaceToDom(workspaceRef.current);
+        const updatedXml = Blockly.Xml.workspaceToDom(workspaceRef.current);    //update code for other events accordingly
         const updatedXmlText = Blockly.Xml.domToText(updatedXml);
-        setGeneratorCode(updatedXmlText); // Update the generator code state
+        setGeneratorCode(updatedXmlText);     //update block gen code
 
         const updatedCode = Blockly.JavaScript.workspaceToCode(workspaceRef.current);
-        setBlockCode(updatedCode); // Update the block code state
+        setBlockCode(updatedCode); 
       });
     };
 
     // Attach the change listener after initializing the workspace
     attachChangeListener();
 
-    // Optional: Return a cleanup function to be called on component unmount
-    return () => {
+    return () => {    //meant to clear old workspace
       if (workspaceRef.current) {
-        // Dispose of the Blockly workspace to prevent memory leaks
         workspaceRef.current.dispose();
       }
     };
-  }, [activity]); // Only re-run the effect if 'activity' changes   
+  }, [activity]); //re-run if activity is changed
   
   const handleUndo = () => {
     if (workspaceRef.current.undoStack_.length > 0)
