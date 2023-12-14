@@ -114,14 +114,14 @@ There are multiple branches to this Github repository: a development branch (mai
 - Immediate response of the block factory elements to any change in the toolbox
 
 ![testing](https://github.com/Software-Eng-9e/Emerald-Project06-9e/assets/93238079/357a6666-e0ca-41bc-a581-9d49bc45617b)
-CASMM Workspace
+
 ![image](https://github.com/Software-Eng-9e/Emerald-Project06-9e/assets/93238079/c16b537a-5d7a-428b-9c1b-d6508c1b8765)
-Classroom Manager View
+
 ![image](https://github.com/Software-Eng-9e/Emerald-Project06-9e/assets/93238079/541c3db4-9356-4540-a120-1b74eb2664d7)
-Block List View Page
+
 ![image](https://github.com/Software-Eng-9e/Emerald-Project06-9e/assets/93238079/de03b5a8-1add-45a3-86d6-6550b42b445f)
 ![image](https://github.com/Software-Eng-9e/Emerald-Project06-9e/assets/93238079/e4a5c81d-a3c5-4789-9076-a777b72a202a)
-Saving Custom Block Functionality Prompt (Actual)
+
 
 #### Updates to Database, Server Connection, and STRAPI Dump Files
 
