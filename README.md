@@ -9,26 +9,26 @@ Cloud-based programming interface
 
 <br/>
 
-## Application
+#### Application
 
-### `client` 
+#### `client` 
 [client](/client#client) is the frontend of the application. It is powered by [React](https://reactjs.org/) and [Blockly](https://developers.google.com/blockly).
 
-### `server`
+#### `server`
 
 [server](/server#server) is the web server and application server. It is powered by [Node](https://nodejs.org/en/) and [Strapi](https://docs-v3.strapi.io/developer-docs/latest/getting-started/introduction.html).
 
-### `compile`
+#### `compile`
 
   [compile](/compile#compile) is an arduino compiler service. It is an unofficial fork of [Chromeduino](https://github.com/spaceneedle/Chromeduino).
 
 <br/>
 
-## Environments
+#### Environments
 
 > The project is divided into three conceptual environments.
 
-### Development
+#### Development
 #### Structure
 
 The development environment is composed of five servers. The first one is run with the [Create React App](https://create-react-app.dev/docs/getting-started/) dev server. The later four are containerized with docker and run with [docker compose](https://docs.docker.com/compose/).
@@ -61,7 +61,7 @@ The development environment is composed of five servers. The first one is run wi
    > Grant permission to the **scripts** and **server** directories if you are prompted
    
 
-### Staging
+#### Staging
 
 #### Structure
 
@@ -91,52 +91,56 @@ The production environment is a Heroku app. It is composed of a web dyno, compil
 
 <br/>
 
-## Maintenance
+#### Maintenance
 
 All three components of the application have their own dependencies managed in their respective `package.json` files. Run `npm outdated` in each folder to see what packages have new releases. Before updating a package (especially new major versions), ensure that there are no breaking changes. Avoid updating all of the packages at once by running `npm update` because it could lead to breaking changes. 
 
-### Strapi
+#### Strapi
 
 This is by far the largest and most important dependency we have. Staying up to date with its [releases](https://github.com/strapi/strapi/releases) is important for bug/security fixes and new features. When it comes to actually upgrading Strapi make sure to follow the [migration guides](https://docs-v3.strapi.io/developer-docs/latest/update-migration-guides/migration-guides.html#v3-guides)!
 
 <br/>
 
-## CI/CD
+#### Branches
 
-All of the deployments and releases are handled automatically with [GitHub Actions](https://docs.github.com/en/actions). The workflows implement custom [Actions](https://github.com/STEM-C/CaSMM/actions) that live in the [auto](https://github.com/STEM-C/auto) repo.
+There are multiple branches to this Github repository: a development branch (main viable product branch) as well as respective individual branches. Our individual branches holds all the code that we are still working on or many not be entirely functional. Development is what is currently deployed on your website.
 
-<br/>
+#### Features Implemented
 
-## Contributing
+- Operational replica of Ardublockly block factory within CASMM
+- Block definition extractor fully functional
+- Block preview display based on the block definition extracted from the root block
+- Arduino code generator base on the custom block preview and definition
+- Immediate response of the block factory elements to any change in the toolbox
 
-### Git Flow 
+![testing](https://github.com/Software-Eng-9e/Emerald-Project06-9e/assets/93238079/357a6666-e0ca-41bc-a581-9d49bc45617b)
 
-> We will follow this git flow for the most part — instead of individual release branches, we will have one to streamline staging deployment 
+![image](https://github.com/Software-Eng-9e/Emerald-Project06-9e/assets/93238079/c16b537a-5d7a-428b-9c1b-d6508c1b8765)
 
-![Git Flow](https://nvie.com/img/git-model@2x.png)
+![image](https://github.com/Software-Eng-9e/Emerald-Project06-9e/assets/93238079/541c3db4-9356-4540-a120-1b74eb2664d7)
 
-### Branches
+![image](https://github.com/Software-Eng-9e/Emerald-Project06-9e/assets/93238079/de03b5a8-1add-45a3-86d6-6550b42b445f)
 
-#### Protected
+![image](https://github.com/Software-Eng-9e/Emerald-Project06-9e/assets/93238079/e4a5c81d-a3c5-4789-9076-a777b72a202a)
 
-> Locked for direct commits — all commits must be made from a non-protected branch and submitted via a pull request with one approving review
+#### Updates to Database, Server Connection, and STRAPI Dump Files
 
-- **master** - Production application
+- No updates were performed
+- This project was produce within CASMM environment
 
-#### Non-protected
+#### Outstanding Work
 
-> Commits can be made directly to the branch
+- Adding custom blocks to the gallery
+- Teachers adding custom blocks to classrooms
+- Block documentation within the database
+- Further stylizing the workspace
 
-- **release** - Staging application
-- **develop** - Working version of the application
-- **feature/<`scaffold`>-<`feature-name`>** - Based off of develop
-  - ex. **feature/cms-strapi**
-- **hotfix/<`scaffold`>-<`fix-name`>** - Based off of master
-  - ex. **hotfix/client-cors**
+#### Built Upon
 
-### Pull Requests
+- Ardublockly Repository:  https://github.com/carlosperate/ardublockly
+- BlockyDuinoFactory: https://github.com/BlocklyDuino/BlocklyDuinoFactory
 
-Before submitting a pull request, rebase the feature branch into the target branch to resolve any merge conflicts.
 
-- PRs to **master** should squash and merge
-- PRs to all other branches should create a merge commit
+
+
+
